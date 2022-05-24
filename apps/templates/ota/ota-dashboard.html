@@ -1,0 +1,108 @@
+{% extends "layouts/base.html" %} {% block title %} OTA Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="content">
+    <div class="panel-header bg-primary-gradient">
+        <div class="page-inner py-5">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                <div>
+                    <h2 class="text-white pb-2 fw-bold">OTA</h2>
+                    <h5 class="text-white op-7 mb-2"></h5>
+                </div>
+                <div class="ml-md-auto py-2 py-md-0">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-inner mt--5">
+        <div class="row row-card-no-pd">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <h4 class="card-title">Thông tin trạm</h4>
+                            <div class="card-tools">
+                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span></button>
+                                <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"><span class="fa fa-sync-alt"></span></button>
+                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-times"></span></button>
+                            </div>
+                        </div>
+                        <p class="card-category">
+                            Thông tin các Node cảm biến
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive table-hover table-sales">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <td>Host Name</td>
+                                                <td>Địa chỉ IP</td>
+                                                <td>Port</td>
+                                                <td>TCP Check</td>
+                                                <td>SSH Upload</td>
+                                                <td>Board</td>
+                                                <td>Auth Upload</td>
+                                                <td>Tác vụ</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for device in devices %}
+                                            <tr>
+                                                {% for info in device %}
+                                                <td>{{info}}</td>
+                                                {% endfor %}
+                                                <td>
+                                                    <button type="button" onclick="reconfig('{{device[1]|replace(".", "-")}}')"
+                                                            class="btn btn-icon btn-small-icon btn-border btn-round btn-info"
+                                                            id="reconfig-btn">
+														<i class="fas fa-code"></i>
+													</button>
+                                                    <template id="ota-{{device[1]|replace(".", "-")}}">
+                                                        <swal-html>
+                                                            <ul class="list-group mt-3">
+                                                                <li class="list-group-item list-group-item-light">Host Name: {{device[0]}}</li>
+                                                                <li class="list-group-item list-group-item-light">Địa chỉ IP: {{device[1]}}</li>
+                                                                <li class="list-group-item list-group-item-light">Port: {{device[2]}}</li>
+                                                                <li class="list-group-item list-group-item-light">TCP Check: {{device[3]}}</li>
+                                                                <li class="list-group-item list-group-item-light">SSH Upload: {{device[4]}}</li>
+                                                                <li class="list-group-item list-group-item-light">Board: {{device[5]}}</li>
+                                                                <li class="list-group-item list-group-item-light">Auth Upload: {{device[6]}}</li>
+                                                            </ul>
+                                                            <div class="mt-3">
+                                                                <b>Chọn image mới</b>
+                                                                <div class="form-group">
+                                                                    <select class="form-control" id="image-{{device[1]|replace(".", "-")}}">
+                                                                        {% for image in images %}
+                                                                            <option value="{{image.id}}">{{image.image_name}} - ({{ image.image_version }})</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </swal-html>
+                                                    </template>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/js/baonv/ota-main.js"></script>
+{% endblock javascripts %}

@@ -1,0 +1,79 @@
+{% extends "layouts/base.html" %} {% block title %} Mobile Config {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="content">
+    <div class="panel-header bg-primary-gradient">
+        <div class="page-inner py-5">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                <div>
+                    <h2 class="text-white pb-2 fw-bold">Cấu hình module sim</h2>
+                    <h5 class="text-white op-7 mb-2"></h5>
+                </div>
+                <div class="ml-md-auto py-2 py-md-0">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="page-inner mt--5">
+        <div class="row row-card-no-pd">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <h4 class="card-title">Thông tin module sim</h4>
+                        </div>
+                        {% if device_status %}
+                            <p class="card-category text-success">Open: {{ device_status }}</p>
+                        {% else %}
+                            <p class="card-category text-danger">Open: {{ device_status }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                            {% for info in device_info %}
+                                <div class="row">
+                                    <div class="col-md-4 col-6">
+                                        <span class="text text-info">{{ info.description }}</span>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                    {% for result in info.result %}
+                                        <span class="text text-warning">{{ result }}</span>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                                <hr style="border-color: #ebecec!important">
+                            {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                            {% for info in sim_status %}
+                                <div class="row">
+                                    <div class="col-md-4 col-6">
+                                        <span class="text text-info">{{ info.description }}</span>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                    {% for result in info.result %}
+                                        <span class="text text-warning">{{ result }}</span>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                                <hr style="border-color: #ebecec!important">
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script src="/static/assets/js/baonv/mi-main.js"></script>
+{% endblock javascripts %}

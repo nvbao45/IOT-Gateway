@@ -1,0 +1,205 @@
+{% extends "layouts/base.html" %} {% block title %} Mobile Config {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="content">
+    <div class="panel-header bg-primary-gradient">
+        <div class="page-inner py-5">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                <div>
+                    <h2 class="text-white pb-2 fw-bold">Cấu hình module sim</h2>
+                    <h5 class="text-white op-7 mb-2"></h5>
+                </div>
+                <div class="ml-md-auto py-2 py-md-0">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="page-inner mt--5">
+        <div class="row row-card-no-pd">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <h4 class="card-title">Cầu hình thiết bị</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <b>Port</b>
+                                <div class="form-group">
+                                    <select class="form-control" id="port" required>
+                                        {% for port in ports %}
+                                            <option value="{{port[0]}}" {% if config.port == port[0] %}selected="selected"{% endif %}>
+                                                {{ port[0] }}-{{ port[1] }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <b>Baudrate</b>
+                                <div class="form-group">
+                                    <select class="form-control" id="baudrate">
+                                        {% for baudrate in baudrates %}
+                                            <option value="{{baudrate}}" {% if config.baudrate == baudrate %}selected="selected"{% endif %}>
+                                                {{ baudrate }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <b>Timeout</b>
+                                <div class="form-group">
+                                    <input type="number" class="form-control" id="timeout" value="{{ config.timeout }}">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <b>APN</b>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="apn" value="{{ config.apn }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <b>User</b>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="user" value="{{ config.apn_user }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <b>Password</b>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="pwd" value="{{ config.apn_pwd }}">
+                                </div>
+                            </div>
+                        </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <div class="form-group">
+                                <button class="btn btn-primary" onclick="saveConfig()">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-card-no-pd">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <h4 class="card-title">Trạng thái thiết bị</h4>
+                        </div>
+                        {% if device_status %}
+                            <p class="card-category text-success">Ready: {{ device_status }}</p>
+                        {% else %}
+                            <p class="card-category text-danger">Ready: {{ device_status }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                            {% for info in device_info %}
+                                <div class="row">
+                                    <div class="col-md-4 col-6">
+                                        <span class="text text-info">{{ info.description }}</span>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                    {% for result in info.result %}
+                                        <span class="text text-warning">{{ result }}</span>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                                <hr style="border-color: #ebecec!important">
+                            {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                            {% for info in sim_status %}
+                                <div class="row">
+                                    <div class="col-md-4 col-6">
+                                        <span class="text text-info">{{ info.description }}</span>
+                                    </div>
+                                    <div class="col-md-8 col-6">
+                                    {% for result in info.result %}
+                                        <span class="text text-warning">{{ result }}</span>
+                                    {% endfor %}
+                                    </div>
+                                </div>
+                                <hr style="border-color: #ebecec!important">
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if device_status %}
+        <div class="row row-card-no-pd">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <h4 class="card-title">Kiểm tra kết nối</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="basic-url">Post data</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">https://smartcity.uit.edu.vn/api/</span>
+                                        </div>
+                                        <input type="text" value="data/parseDataV2" class="form-control" id="post_url" aria-describedby="basic-addon3">
+                                    </div>
+                                    <textarea onchange="prettyPrint()" rows="5" class="form-control" id="post_body">{"test": "test"}</textarea>
+                                    <p id="post_result"></p>
+                                    <button class="btn btn-primary" onclick="httpPost()">Post</button>
+                                    <span class="text text-danger " id="error"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="basic-url">Get data</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">https://</span>
+                                        </div>
+                                         <input type="text" value="httpbin.org/get" class="form-control" id="get_url" aria-describedby="basic-addon3">
+                                    </div>
+                                    <p id="get_result"></p>
+                                    <button class="btn btn-primary" onclick="httpGet()">Get</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Call</label>
+                                    <input type="text" class="form-control" id="phone_number"/>
+                                    <button class="btn btn-primary mt-3" onclick="call()">Call</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script src="/static/assets/js/baonv/mi-config.js"></script>
+{% endblock javascripts %}

@@ -1,0 +1,170 @@
+{% extends "layouts/base.html" %} {% block title %} Dashboard {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="content">
+    <div class="panel-header bg-primary-gradient">
+        <div class="page-inner py-5">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                <div>
+                    <h2 class="text-white pb-2 fw-bold">Dashboard</h2>
+                    <h5 class="text-white op-7 mb-2">UiTiOt Dashboard</h5>
+                </div>
+                <div class="ml-md-auto py-2 py-md-0">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-inner mt--5">
+        <div class="row mt--2 row-card-no-pd">
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="icon-big text-center">
+                                    <i class="fas fa-server text-success"></i>
+                                </div>
+                            </div>
+                            <div class="col-7 col-stats">
+                                <div class="numbers">
+                                    <p class="card-category">CPU</p>
+                                    <h4 id="system-cpu" class="card-title">{{system['cpu']}}%</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="icon-big text-center">
+                                    <i class="fas fa-hdd text-warning"></i>
+                                </div>
+                            </div>
+                            <div class="col-7 col-stats">
+                                <div class="numbers">
+                                    <p class="card-category">Disk Free</p>
+                                    <h4 id="system-disk" class="card-title">{{ system['disk_free']}}GB</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="icon-big text-center">
+                                    <i class="flaticon-coins text-info"></i>
+                                </div>
+                            </div>
+                            <div class="col-7 col-stats">
+                                <div class="numbers">
+                                    <p class="card-category">Ram Free</p>
+                                    <h4 id="system-ram" class="card-title">{{system['ram_free']}}MB</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="card card-stats card-round">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="icon-big text-center text text-danger">
+                                    <i class="fas fa-thermometer-quarter"></i>
+                                </div>
+                            </div>
+                            <div class="col-7 col-stats">
+                                <div class="numbers">
+                                    <p class="card-category">CPU Temp</p>
+                                    <h4 id="system-cpu-temp" class="card-title">{{ system['cpu_temp'] }}°C</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% for node_name in node_names %}
+                <div class="col-md-4">
+                    <div class="card full-height">
+                        <div class="card-header">
+                            <div class="card-title">{{ node_name[2] }}</div>
+                            <span id="timestamp-{{ node_name[0] }}"></span>
+                        </div>
+                        <div class="card-body">
+                            {% for data in last_data %}
+                                {% if data['node_name'] == node_name[0] %}
+                                    <p>{{ data.sensor }}: {{ data.value }}</p>
+                                    <script>
+                                        document.getElementById('timestamp-{{ node_name[0] }}').innerHTML = '{{ data.timestamp }}';
+                                    </script>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    <!---
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card full-height">
+                    <div class="card-header">
+                        <div class="card-title">Sensor activity</div>
+                    </div>
+                    <div class="card-body">
+                        <ol class="activity-feed" id="activity-feed">
+
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card full-height">
+                    <div class="card-header">
+                        <div class="card-title">SIM activity</div>
+                    </div>
+                    <div class="card-body">
+                        <ol class="activity-feed" id="sim-activity-feed">
+
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+     --->
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block javascripts %}
+{#<script type="module" src="/static/assets/js/baonv/ws-dashboard.js"></script>#}
+    <script>
+        const socket = new WebSocket('ws://' + location.host + '/ws/system-info');
+        socket.addEventListener('message', ev => {
+                        console.log(ev.data);
+
+            const data = JSON.parse(ev.data);
+            console.log(data);
+            console.log(data.cpu_temp);
+            console.log(data['cpu_temp']);
+            $('#system-cpu-temp').text(data['cpu_temp'] + '°C');
+            $('#system-cpu').text(data['cpu'] + '%');
+            $('#system-ram').text(data['ram_free'] + 'MB');
+            $('#system-disk').text(data['disk_free'] + 'GB');
+        })
+    </script>
+{% endblock javascripts %}

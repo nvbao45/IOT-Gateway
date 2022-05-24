@@ -1,0 +1,51 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Data {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="content">
+		<div class="page-inner">
+			<div class="page-header">
+				<h4 class="page-title">Data Tables</h4>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title">Sensors Data</h4>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table id="datatable" class="display table table-striped table-hover" >
+									<thead>
+										<tr>
+											<th>ID Node</th>
+											<th>Tên Node</th>
+											<th>Cảm biến</th>
+											<th>Giá trị</th>
+											<th>Thời gian</th>
+											<th>Gateway ID</th>
+										</tr>
+									</thead>
+									<tbody>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+	<script src="/static/assets/js/baonv/ws-datatable.js"></script>
+{% endblock javascripts %}

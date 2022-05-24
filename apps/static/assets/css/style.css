@@ -1,0 +1,18 @@
+.list-group-item {
+    background: none !important;
+}
+
+.btn-small-icon {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+}
+
+.swal2-container input,textarea,select {
+    background-color: white !important;
+    color: black !important;
+}
+
+input[type="text"]:disabled {
+    color: black !important;
+}

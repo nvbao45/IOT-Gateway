@@ -1,0 +1,119 @@
+{% extends "layouts/base.html" %} {% block title %} Images {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="content">
+    <div class="panel-header bg-primary-gradient">
+        <div class="page-inner py-5">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                <div>
+                    <h2 class="text-white pb-2 fw-bold">OTA</h2>
+                    <h5 class="text-white op-7 mb-2"></h5>
+                </div>
+                <div class="ml-md-auto py-2 py-md-0">
+                    <button id="btn-upload" class="btn btn-secondary btn-round">Thêm images</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-inner mt--5">
+        <div class="row row-card-no-pd">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <h4 class="card-title">Thông tin images</h4>
+                            <div class="card-tools">
+                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span></button>
+                                <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"><span class="fa fa-sync-alt"></span></button>
+                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-times"></span></button>
+                            </div>
+                        </div>
+                        <p class="card-category">
+                            Thông tin các images đã được tạo
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive table-hover table-sales">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <td>Tên</td>
+                                                <td>Tệp tin</td>
+                                                <td>Phiên bản</td>
+                                                <td>Kích thước</td>
+                                                <td>Mô tả</td>
+                                                <td>Ngày upload</td>
+                                                <td>Người upload</td>
+                                                <td>Tác vụ</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for image in images %}
+                                            <tr id="image-{{ image.id }}">
+                                                <td>{{ image.image_name }}</td>
+                                                <td>{{ image.image_file }}</td>
+                                                <td>{{ image.image_version }}</td>
+                                                <td>{{ image.image_size }} bytes</td>
+                                                <td>{{ image.image_description }}</td>
+                                                <td>{{ image.image_created_at }}</td>
+                                                <td>{{ image.image_owner }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-icon btn-small-icon btn-border btn-round" onclick="deleteImage({{image.id}})">
+														<i class="fa fa-times"></i>
+													</button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SweetAlert Template -->
+<template id="image-upload">
+    <swal-title>Thêm image</swal-title>
+    <swal-html>
+        <form id="image-upload-form">
+            <div class="form-group form-inline">
+                <label for="inlineinput" class="col-md-3 col-form-label">Tên</label>
+                <div class="col-md-9 p-0">
+                    <input name="name" type="text" class="form-control input-full" id="inlineinput" placeholder="Enter input">
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label for="inlineinput" class="col-md-3 col-form-label">Version</label>
+                <div class="col-md-9 p-0">
+                    <input name="version" type="text" class="form-control input-full" id="inlineinput" placeholder="Enter input">
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label for="inlineinput" class="col-md-3 col-form-label">Ghi chú</label>
+                <div class="col-md-9 p-0">
+                    <textarea name="description" type="text" class="form-control input-full" id="inlineinput" placeholder="Enter input"></textarea>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label for="inlineinput" class="col-md-3 col-form-label">Chọn file</label>
+                <div class="col-md-9 p-0">
+                     <input type="file" id="file" name="file-input" class="form-control input-full" accept=".bin">
+                </div>
+            </div>
+        </form>
+    </swal-html>
+</template>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/js/baonv/ota-image.js"></script>
+{% endblock javascripts %}

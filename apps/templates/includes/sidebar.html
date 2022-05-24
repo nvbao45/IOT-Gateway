@@ -1,0 +1,123 @@
+<!-- Sidebar -->
+<div class="sidebar sidebar-style-2" data-background-color="dark2">
+    <div class="sidebar-wrapper scrollbar scrollbar-inner">
+        <div class="sidebar-content">
+
+            {% if current_user.is_authenticated %}
+            <div class="user">
+                <div class="avatar-sm float-left mr-2">
+                    <img src="/static/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle">
+                </div>
+                <div class="info">
+                    <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                        <span>
+                        {{ current_user.username }}
+                        <span class="user-level">
+                            {{ current_user.email }}
+                        </span>
+                        <span class="caret"></span>
+                        </span>
+                    </a>
+                    <div class="clearfix"></div>
+
+                    <div class="collapse in" id="collapseExample">
+                        <ul class="nav">
+                            <li>
+                                <a href="{{ url_for('authentication_blueprint.logout') }}">
+                                    <span class="link-collapse">Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ul class="nav nav-primary">
+                <li class="nav-item {% if 'ws' in segment %} active {% endif %}">
+                    <a data-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-home"></i>
+                        <p>Monitor</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse {% if 'ws' in segment %} show {% endif %}" id="dashboard">
+                        <ul class="nav nav-collapse">
+                            <li class="{% if 'ws-dashboard' in segment %} active {% endif %}">
+                                <a href="/ws">
+                                    <span class="sub-item">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="{% if 'ws-datatable' in segment %} active {% endif %}">
+                                <a href="/ws/datatable">
+                                    <span class="sub-item">Data</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item {% if 'ota' in segment %} active {% endif %}">
+                    <a data-toggle="collapse" href="#ota" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-cogs"></i>
+                        <p>OTA</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse {% if 'ota' in segment %} show {% endif %}" id="ota">
+                        <ul class="nav nav-collapse">
+                            <li class="{% if 'ota-main' in segment %} active {% endif %}">
+                                <a href="/ota">
+                                    <span class="sub-item">OTA</span>
+                                </a>
+                            </li>
+                            <li class="{% if 'ota-images' in segment %} active {% endif %}">
+                                <a href="/ota/images">
+                                    <span class="sub-item">Images</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item {% if 'devices' in segment %} active {% endif %}">
+                    <a data-toggle="collapse" href="#devices" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-microchip"></i>
+                        <p>Devices</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse {% if 'devices' in segment %} show {% endif %}" id="devices">
+                        <ul class="nav nav-collapse">
+                            <li class="{% if 'devices-token' in segment %} active {% endif %}">
+                                <a href="/devices/">
+                                    <span class="sub-item">Devices</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item {% if 'mb' in segment %} active {% endif %}">
+                    <a data-toggle="collapse" href="#mobile-internet" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-broadcast-tower"></i>
+                        <p>Mobile Internet</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse {% if 'mb' in segment %} show {% endif %}" id="mobile-internet">
+                        <ul class="nav nav-collapse">
+                            <li class="{% if 'mg_info' in segment %} active {% endif %}">
+                                <a href="/mb/info">
+                                    <span class="sub-item">Info</span>
+                                </a>
+                            </li>
+                            <!--<li class="{% if 'mb_config' in segment %} active {% endif %}">
+                                <a href="/mobile-internet/config">
+                                    <span class="sub-item">Config</span>
+                                </a>
+                            </li>-->
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="nav nav-primary">
+
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- End Sidebar -->

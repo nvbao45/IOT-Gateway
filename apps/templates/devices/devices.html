@@ -1,0 +1,116 @@
+{% extends "layouts/base.html" %} {% block title %} Devices {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="content">
+    <div class="panel-header bg-primary-gradient">
+        <div class="page-inner py-5">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                <div>
+                    <h2 class="text-white pb-2 fw-bold">Thiết bị</h2>
+                    <h5 class="text-white op-7 mb-2"></h5>
+                </div>
+                <div class="ml-md-auto py-2 py-md-0">
+                    <button id="btn-add-device" class="btn btn-secondary btn-round">Thêm thiết bị</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-inner mt--5">
+        <div class="row row-card-no-pd">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <h4 class="card-title">Thông tin các thiết bị</h4>
+                            <div class="card-tools">
+                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span></button>
+                                <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"><span class="fa fa-sync-alt"></span></button>
+                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-times"></span></button>
+                            </div>
+                        </div>
+                        <p class="card-category">
+                            Token dùng để các node cảm biến có thể gửi dữ liệu tới gateway.
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive table-hover table-sales">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <td>Tên thiết bị</td>
+                                                <td>Token</td>
+                                                <td>Mô tả</td>
+                                                <td>Số request</td>
+                                                <td>Người tạo</td>
+                                                <td>Ngày tạo</td>
+                                                <td>Tác vụ</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for device in devices %}
+                                            <tr id="device-{{ device.id }}">
+                                                <td>{{ device.device_name }}</td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" id="token-input-{{ device.id }}" placeholder="***********" disabled>
+                                                        <div class="input-group-prepend" style="cursor: pointer"
+                                                             data-show="false"
+                                                             data-token="{{ device.device_token }}"
+                                                             data-id="{{ device.id }}"
+                                                             onclick="showToken(this)">
+                                                            <div class="input-group-text"><i class="fas fa-eye"></i></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>{{ device.device_description }}</td>
+                                                <td>{{ device.request_count }}</td>
+                                                <td>{{ device.device_owner }}</td>
+                                                <td>{{ device.device_created_at }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-icon btn-small-icon btn-border btn-round" onclick="deleteDevice({{device.id}})">
+														<i class="fa fa-times"></i>
+													</button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SweetAlert Template -->
+<template id="add-device-template">
+    <swal-title>Thêm thiết bị</swal-title>
+    <swal-html>
+        <form id="add-device-form">
+            <div class="form-group form-inline">
+                <label for="inlineinput" class="col-md-3 col-form-label">Tên thiết bị</label>
+                <div class="col-md-9 p-0">
+                    <input name="name" type="text" class="form-control input-full dis" id="inlineinput" placeholder="Enter input">
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label for="inlineinput" class="col-md-3 col-form-label">Mô tả</label>
+                <div class="col-md-9 p-0">
+                    <textarea name="description" type="text" class="form-control input-full" id="inlineinput" placeholder="Enter input"></textarea>
+                </div>
+            </div>
+        </form>
+    </swal-html>
+</template>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/js/baonv/devices-token.js"></script>
+{% endblock javascripts %}
