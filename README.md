@@ -13,11 +13,11 @@
     <a href="#"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="">View Demo</a>
+    <a href="/tree/master/screenshots">View Demo</a>
     ·
-    <a href="">Report Bug</a>
+    <a href="#">Report Bug</a>
     ·
-    <a href="">Request Feature</a>
+    <a href="#">Request Feature</a>
   </p>
 </div>
 
@@ -55,6 +55,7 @@
 <div align="center">
    <img src="screenshots/0.png" alt="Screenshot" />
    <img src="screenshots/1.png" alt="Screenshot" />
+   <a href="SCREENSHOTS.md">View All Screenshots</a>
 </div>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -102,7 +103,7 @@
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-_[Documentation]()_
+_[Documentation](#)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
