@@ -14,22 +14,19 @@ class SerialConfigParam:
 
 
 class Sim800l:
-    def __init__(self, serial_config: SerialConfigParam):
-        self.serial_config = serial_config
+    def __init__(self, port='', baudrate=0, timeout=0, apn='', apn_user='', apn_pwd=''):
         self.serial = serial.Serial()
-        self.port = serial_config.port
-        self.baudrate = serial_config.baudrate
-        self.timeout = serial_config.timeout
-        self.apn = serial_config.apn
-        self.apn_user = serial_config.apn_user
-        self.apn_pwd = serial_config.apn_pwd
+        self.port = port
+        self.baudrate = baudrate
+        self.timeout = timeout
+        self.apn = apn
+        self.apn_user = apn_user
+        self.apn_pwd = apn_pwd
         self.sim_status = None
         self.phone_number = None
         self.ip_address = None
         self.product_name = None
         self.manufacturer = None
-        self.open()
-        self.set_apn()
 
     def config(self, port, baudrate, timeout, apn, apn_user, apn_pwd):
         self.port = port
@@ -61,9 +58,14 @@ class Sim800l:
         self.serial.close()
 
     def ready(self):
-        if self.send_command('AT', 0.5)[0] == 'AT':
-            return True
-        else:
+        if not self.is_open():
+            return False
+        try:
+            if self.send_command('AT', 0.5)[0] == 'AT':
+                return True
+            else:
+                return False
+        except:
             return False
 
     def send_command(self, command: str, sleep_time: int = 0):
@@ -154,9 +156,12 @@ class Sim800l:
         phone_number = self.send_command_with_description('AT+CNUM', 'Phone Number', 1)
         ip_address = self.send_command_with_description('AT+SAPBR=2,1', 'IP Address', 1)
 
-        sim_status['result'] = [sim_status['result'][0].split(':')[1].strip()]
-        phone_number['result'] = [re.search(',\"(.*)\"', phone_number['result'][0]).group(1)]
-        ip_address['result'] = [re.search('\"(.*)\"', ip_address['result'][0]).group(1)]
-        self.sim_status = sim_status
-        self.ip_address = ip_address
-        self.phone_number = phone_number
+        try:
+            sim_status['result'] = [sim_status['result'][0].split(':')[1].strip()]
+            phone_number['result'] = [re.search(',\"(.*)\"', phone_number['result'][0]).group(1)]
+            ip_address['result'] = [re.search('\"(.*)\"', ip_address['result'][0]).group(1)]
+            self.sim_status = sim_status
+            self.ip_address = ip_address
+            self.phone_number = phone_number
+        except Exception as e:
+            print(e)

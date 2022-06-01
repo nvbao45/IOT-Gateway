@@ -3,29 +3,38 @@ function deleteRequest(endpoint, id, removeId) {
     const data = {
         _method: 'delete'
     };
-    $.ajax({
-        url: url,
-        type: 'DELETE',
-        data: data,
-        success: function(data) {
-            if (data.success){
-                $(`#${removeId}-` + id).remove();
-                Swal.fire({
-                    title: 'Success',
-                    text: data.message,
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                })
-            } else {
-                Swal.fire({
-                    title: 'Error',
-                    text: data.message,
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                })
-            }
+    Swal.fire({
+        title: "Bạn có chắc chắn muốn xóa?",
+        showDenyButton: true,
+        confirmButtonText: 'Xóa',
+        denyButtonText: 'Hủy',
+    }).then((result) => {
+        if (result.isConfirmed){
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: data,
+                success: function(data) {
+                    if (data.success){
+                        $(`#${removeId}-` + id).remove();
+                        Swal.fire({
+                            title: 'Success',
+                            text: data.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        })
+                    }
+                }
+            });
         }
-    });
+    })
 }
 
 function addRequest(endpoint, formData) {
@@ -60,7 +69,7 @@ function addRequest(endpoint, formData) {
             Swal.hideLoading()
             Swal.close()
             Swal.fire({
-                title: 'Error',
+                title: 'Thất bại',
                 text: error,
                 icon: 'error',
                 showConfirmButton: false,

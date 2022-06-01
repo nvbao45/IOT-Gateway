@@ -1,0 +1,169 @@
+{% extends "layouts/base.html" %} {% block title %} Chart {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="content">
+    <div class="panel-header bg-primary-gradient">
+        <div class="page-inner py-5">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                <div>
+                    <h2 class="text-white pb-2 fw-bold">Chart config</h2>
+                    <h5 class="text-white op-7 mb-2"></h5>
+                </div>
+                <div class="ml-md-auto py-2 py-md-0">
+                    <button id="btn-addchart" class="btn btn-secondary btn-round">Add chart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="page-inner mt--5">
+        <div class="row row-card-no-pd">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive table-hover table-sales">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <td>Tên</td>
+                                                <td>Thiết bị</td>
+                                                <td>Cảm biến</td>
+                                                <td>Loại</td>
+                                                <td>Màu</td>
+                                                <td>Kích thước</td>
+                                                <td>Người upload</td>
+                                                <td>Ngày upload</td>
+                                                <td>Enable</td>
+                                                <td>Tác vụ</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for chart in charts %}
+                                            <tr id="chart-{{ chart.id }}">
+                                                <td>{{ chart.name }}</td>
+                                                <td>{{ chart.device_name }}</td>
+                                                <td>{{ chart.sensor }}</td>
+                                                <td>{{ chart.type }}</td>
+                                                <td><span style="color: {{ chart.color }}">{{ chart.color }}</span></td>
+                                                <td>{{ chart.size }} columns</td>
+                                                <td>{{ chart.owner }}</td>
+                                                <td>{{ chart.created_at }}</td>
+                                                <td>{{ chart.enable }}</td>
+                                                <td>
+                                                    <button type="button"
+                                                            class="btn btn-info btn-icon btn-small-icon btn-border btn-round"
+                                                            title="Xóa"
+                                                            onclick="updateChart({{chart.id}})">
+														<i class="fa fa-edit"></i>
+													</button>
+                                                    <button type="button"
+                                                            class="btn btn-danger btn-icon btn-small-icon btn-border btn-round"
+                                                            title="Xóa"
+                                                            onclick="deleteChart({{chart.id}})">
+														<i class="fa fa-times"></i>
+													</button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<template id="add-chart">
+    <swal-title>Thêm chart</swal-title>
+    <swal-html>
+        <form id="char-form">
+            <div class="form-group form-inline">
+                <label for="name" class="col-md-3 col-form-label">Tên chart</label>
+                <div class="col-md-9 p-0">
+                    <input name="name" type="text" class="form-control input-full" id="name" placeholder="Enter input">
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-3 col-form-label">Thiết bị</label>
+                <div class="col-md-9 p-0">
+                    <select id="devices-select" name="devices" class="form-control input-full">
+                        <option value="">Chọn thiết bị</option>
+                        {% for device in devices %}
+                            <option value="{{ device.id }}">{{ device.device_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label for="sensors-select" class="col-md-3 col-form-label">Cảm biến</label>
+                <div class="col-md-9 p-0">
+                    <select name="sensor" class="form-control input-full" id="sensors-select">
+                        <option value="">Chọn cảm biến</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label for="samples" class="col-md-3 col-form-label">Số mẫu</label>
+                <div class="col-md-9 p-0">
+                    <input name="samples" id="samples" type="number" class="form-control input-full" placeholder="Enter input">
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label for="size" class="col-md-3 col-form-label">Kích thước</label>
+                <div class="col-md-9 p-0">
+                    <select name="size" class="form-control input-full" id="size-select">
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label for="type" class="col-md-3 col-form-label">Loại chart</label>
+                <div class="col-md-9 p-0">
+                    <select name="type" class="form-control input-full" id="type-select">
+                        <option value="line">Line</option>
+                        <option value="bar">Bar</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label for="color" class="col-md-3 col-form-label">Màu chart</label>
+                <div class="col-md-9 p-0">
+                    <input name="color" class="color-picker" type="color" id="color" value="#ff0000">
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label for="color" class="col-md-3 col-form-label">Enable</label>
+                <div class="col-md-9 p-0 text-left">
+                    <input name="enable" type="checkbox" id="enable" value="true" checked>
+                </div>
+            </div>
+        </form>
+    </swal-html>
+</template>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script src="/static/assets/js/baonv/chart-config.js"></script>
+{% endblock javascripts %}

@@ -1,10 +1,8 @@
 --> WvDial: Internet dialer version 1.61
 --> Initializing modem.
 --> Sending: ATZ
-ATZ
 OK
 --> Sending: ATQ0 V1 E1 S0=0 &C1 &D2 +FCLASS=0
-ATQ0 V1 E1 S0=0 &C1 &D2 +FCLASS=0
 OK
 --> Sending: AT+CGDCONT=1,"IP","v-internet"
 AT+CGDCONT=1,"IP","v-internet"
@@ -14,12 +12,11 @@ AT+CNUM
 +CNUM: ,"0369170680",129
 OK
 --> Sending: ATI
-ATI
 Manufacturer: ZTE CORPORATION
 Model: D6602
 Revision: BD_D6602TLF3V1.0.0B01
 IMEI: 862928025736611
-+GCAP: +CGSM,+FCLASS,+DS
++GCAP: +CGSM,+DS,+ES
 OK
 --> Sending: AT+GMI
 AT+GMI
@@ -31,10 +28,10 @@ OK
 ATDT*99#
 CONNECT 7200000
 --> Carrier detected.  Starting PPP immediately.
---> Starting pppd at Tue May 17 15:38:22 2022
---> Pid of pppd: 1985
+--> Starting pppd at Wed Mar 23 20:30:02 2022
+--> Pid of pppd: 1234
 --> Using interface ppp0
---> local  IP address 10.15.80.22
+--> local  IP address 9.254.233.158
 --> remote IP address 10.64.64.64
 --> primary   DNS address 203.113.131.6
 --> secondary DNS address 203.113.131.5

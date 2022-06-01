@@ -14,6 +14,7 @@ class Users(db.Model, UserMixin):
     email_confirmed_at = db.Column(db.DateTime())
 
     password = db.Column(db.LargeBinary)
+    flag = db.Column(db.Integer, nullable=False, server_default='1')
 
     # User information
     first_name = db.Column(db.String(100), nullable=False, server_default='')

@@ -53,6 +53,27 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item {% if 'chart' in segment %} active {% endif %}">
+                    <a data-toggle="collapse" href="#chart" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-chart-bar"></i>
+                        <p>Chart</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse {% if 'chart' in segment %} show {% endif %}" id="chart">
+                        <ul class="nav nav-collapse">
+                            <li class="{% if 'chart-index' in segment %} active {% endif %}">
+                                <a href="/chart">
+                                    <span class="sub-item">Chart</span>
+                                </a>
+                            </li>
+                            <li class="{% if 'chart-config' in segment %} active {% endif %}">
+                                <a href="/chart/config">
+                                    <span class="sub-item">Chart config</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item {% if 'ota' in segment %} active {% endif %}">
                     <a data-toggle="collapse" href="#ota" class="collapsed" aria-expanded="false">
                         <i class="fas fa-cogs"></i>
@@ -103,11 +124,6 @@
                                     <span class="sub-item">Info</span>
                                 </a>
                             </li>
-                            <!--<li class="{% if 'mb_config' in segment %} active {% endif %}">
-                                <a href="/mobile-internet/config">
-                                    <span class="sub-item">Config</span>
-                                </a>
-                            </li>-->
                         </ul>
                     </div>
                 </li>

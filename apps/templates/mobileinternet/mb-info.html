@@ -22,15 +22,12 @@
         <div class="row row-card-no-pd">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-head-row card-tools-still-right">
-                            <h4 class="card-title">Thông tin mạng di động</h4>
-                        </div>
-                    </div>
                     <div class="card-body">
-                        <div>
-                            {% for log in logs %}
-                                <p>{{ log }}</p>
+                        <div class="row">
+                            {% for key, value in logs.items() %}
+                                <div class="col-md-3">
+                                <span style="color: red; ">{{ value.description }}</span><p>{{ value.value }}</p>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>

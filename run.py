@@ -5,6 +5,8 @@ from decouple import config
 from apps.config import config_dict
 from apps import create_app, db
 
+import logging
+
 
 # WARNING: Don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
@@ -20,6 +22,8 @@ except KeyError:
 
 app = create_app(app_config)
 Migrate(app, db)
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 if DEBUG:
     app.logger.info('DEBUG       = ' + str(DEBUG))

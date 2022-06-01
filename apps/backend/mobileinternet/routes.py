@@ -2,19 +2,53 @@ import serial
 import json
 import serial.tools.list_ports
 import os
-
+import re
 from apps.backend.mobileinternet import blueprint
 from flask import render_template, request, jsonify, current_app
 from flask_login import login_required
 
 
+def get_logs_info():
+    modem_logs = os.path.join(current_app.config['LOGS_FOLDER'], '3g-logs.txt')
+    log_content = ""
+
+    with open(modem_logs, 'r') as f:
+        tmp = f.readlines()
+    for line in tmp:
+        log_content += line
+
+    try:
+        wvdial_version = re.search('WvDial: (.*)', log_content).group(1)
+        phone_number = re.search('\+CNUM: ,\"(.*)\"', log_content).group(1)
+        manufacturer = re.search('Manufacturer: (.*)', log_content).group(1)
+        model = re.search('Model: (.*)', log_content).group(1)
+        revision = re.search('Revision: (.*)', log_content).group(1)
+        imei = re.search('IMEI: (.*)', log_content).group(1)
+        local_ip = re.search('local  IP address (.*)', log_content).group(1)
+        remote_ip = re.search('remote IP address (.*)', log_content).group(1)
+        primary_dns = re.search('primary   DNS address (.*)', log_content).group(1)
+        secondary_dns = re.search('secondary DNS address (.*)', log_content).group(1)
+
+        return dict(
+            wvdial_version={'value': wvdial_version, 'description': 'WvDial version'},
+            phone_number={'value': phone_number, 'description': 'Phone number'},
+            manufacturer={'value': manufacturer, 'description': 'Manufacturer'},
+            model={'value': model, 'description': 'Model'},
+            revision={'value': revision, 'description': 'Revision'},
+            imei={'value': imei, 'description': 'IMEI'},
+            local_ip={'value': local_ip, 'description': 'Local IP'},
+            remote_ip={'value': remote_ip, 'description': 'Remote IP'},
+            primary_dns={'value': primary_dns, 'description': 'Primary DNS'},
+            secondary_dns={'value': secondary_dns, 'description': 'Secondary DNS'}
+        )
+    except:
+        return dict()
+
+
 @blueprint.route('/info')
 @login_required
 def index():
-    modem_logs = os.path.join(current_app.config['LOGS_FOLDER'], '3g-logs.txt')
-    with open(modem_logs, 'r') as f:
-        logs = f.readlines()
-    return render_template('mobileinternet/mb-info.html', logs=logs)
+    return render_template('mobileinternet/mb-info.html', logs=get_logs_info())
 
 
 """

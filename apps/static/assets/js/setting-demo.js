@@ -6,6 +6,13 @@ $(window).resize(function() {
 	$(window).width(); 
 });
 
+// $('body').attr('data-background-full', localStorage.getItem("bodyBackgroundFullColor"));
+// $('.logo-header').attr('data-background-color', localStorage.getItem("logoHeaderColor"));
+// $('.main-header .navbar-header').attr('data-background-color', localStorage.getItem("topBarColor"));
+// $('.sidebar').attr('data-background-color', localStorage.getItem("sideBarColor"));
+// $('body').attr('data-background-color', localStorage.getItem("backgroundColor"));
+// customCheckColor();
+// layoutsColors();
 
 $('.changeBodyBackgroundFullColor').on('click', function(){
 	if($(this).attr('data-color') == 'default'){
@@ -13,6 +20,8 @@ $('.changeBodyBackgroundFullColor').on('click', function(){
 	} else {
 		$('body').attr('data-background-full', $(this).attr('data-color'));
 	}
+
+	localStorage.setItem("bodyBackgroundFullColor", $(this).attr('data-color'));
 
 	$(this).parent().find('.changeBodyBackgroundFullColor').removeClass("selected");
 	$(this).addClass("selected");
@@ -25,6 +34,8 @@ $('.changeLogoHeaderColor').on('click', function(){
 	} else {
 		$('.logo-header').attr('data-background-color', $(this).attr('data-color'));
 	}
+
+	localStorage.setItem("logoHeaderColor", $(this).attr('data-color'));
 
 	$(this).parent().find('.changeLogoHeaderColor').removeClass("selected");
 	$(this).addClass("selected");
@@ -39,6 +50,8 @@ $('.changeTopBarColor').on('click', function(){
 		$('.main-header .navbar-header').attr('data-background-color', $(this).attr('data-color'));
 	}
 
+	localStorage.setItem("topBarColor", $(this).attr('data-color'));
+
 	$(this).parent().find('.changeTopBarColor').removeClass("selected");
 	$(this).addClass("selected");
 	layoutsColors();
@@ -51,6 +64,8 @@ $('.changeSideBarColor').on('click', function(){
 		$('.sidebar').attr('data-background-color', $(this).attr('data-color'));
 	}
 
+	localStorage.setItem("sideBarColor", $(this).attr('data-color'));
+
 	$(this).parent().find('.changeSideBarColor').removeClass("selected");
 	$(this).addClass("selected");
 	layoutsColors();
@@ -59,6 +74,9 @@ $('.changeSideBarColor').on('click', function(){
 $('.changeBackgroundColor').on('click', function(){
 	$('body').removeAttr('data-background-color');
 	$('body').attr('data-background-color', $(this).attr('data-color'));
+
+	localStorage.setItem("backgroundColor", $(this).attr('data-color'));
+
 	$(this).parent().find('.changeBackgroundColor').removeClass("selected");
 	$(this).addClass("selected");
 });

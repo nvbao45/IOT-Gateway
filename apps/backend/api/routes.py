@@ -11,26 +11,29 @@ import datetime
 
 def parse_data_and_save(data, access_token):
     _data = data.split("#")
-    device_id = _data[0]
-    device_name = _data[1]
+    node_id = _data[0]
+    node_name = _data[1]
+    device_id = Devices.query.filter_by(device_token=access_token).first().id
     timestamp = datetime.datetime.fromtimestamp(int(_data[2])) - datetime.timedelta(hours=7)
     list_sensor = _data[3].split(";")
+
     for sensor in list_sensor:
         sensor_name = sensor.split(":")[0]
         sensor_value = float(sensor.split(":")[1])
         data = dict(
-            node_id=device_id,
-            node_name=device_name,
+            node_id=node_id,
+            node_name=node_name,
             sensor=sensor_name,
             value=sensor_value,
             timestamp=timestamp,
+            device_id=device_id,
             access_token=access_token
         )
 
         try:
             sensor_data = SensorParser(**data)
-            last_data = LastData.query.filter(and_(LastData.node_id == device_id,
-                                                   LastData.node_name == device_name,
+            last_data = LastData.query.filter(and_(LastData.node_id == node_id,
+                                                   LastData.node_name == node_name,
                                                    LastData.sensor == sensor_name)).first()
             if last_data is None:
                 ldt = LastData(**data)

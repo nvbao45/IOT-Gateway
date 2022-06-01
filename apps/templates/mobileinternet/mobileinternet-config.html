@@ -120,7 +120,9 @@
                                     {% endfor %}
                                     </div>
                                 </div>
-                                <hr style="border-color: #ebecec!important">
+                                {% if info.description is defined %}
+                                    <hr style="border-color: #ebecec!important">
+                                {% endif %}
                             {% endfor %}
                             </div>
                             <div class="col-md-6">
@@ -135,7 +137,9 @@
                                     {% endfor %}
                                     </div>
                                 </div>
-                                <hr style="border-color: #ebecec!important">
+                                {% if info.description is defined %}
+                                    <hr style="border-color: #ebecec!important">
+                                {% endif %}
                             {% endfor %}
                             </div>
                         </div>

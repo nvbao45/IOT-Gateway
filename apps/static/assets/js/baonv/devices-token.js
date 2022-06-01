@@ -20,7 +20,7 @@ function showToken(obj){
     obj.dataset.show = obj.dataset.show == "true" ? "false" : "true";
 }
 
-function addDevice(){
+function addDevice(entrypoint){
     const formData = new FormData();
     const queryString = $('#add-device-form').serializeArray();
 
@@ -28,7 +28,41 @@ function addDevice(){
         formData.append(item.name, item.value);
     });
 
-    addRequest('/devices/add', formData);
+    addRequest(entrypoint, formData);
+}
+
+function editDevice(id){
+
+    fetch('/devices/' + id, {
+        method: 'GET',
+    })
+        .then(data => data.json())
+        .then(data =>
+        {
+            Swal.fire({
+                template: '#add-device-template',
+                showCancelButton: true,
+                showCloseButton: true
+            }).then((result) => {
+                if (result.isConfirmed){
+                    addDevice(`/devices/${id}/edit`);
+                    Swal.fire({
+                        title: 'Đang xử lý',
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                    })
+                }
+            })
+            let hidden_control = document.querySelectorAll('#add-device-form .hidden');
+            hidden_control.forEach(function(item){
+                item.classList.remove('hidden');
+            });
+
+            document.getElementById("name").value = data['device_name'];
+            document.getElementById("description").value = data['device_description'];
+            document.getElementById("token").value = data['device_token'];
+        })
 }
 
 $('#btn-add-device').on('click', function(){
@@ -39,7 +73,7 @@ $('#btn-add-device').on('click', function(){
         showCloseButton: true
     }).then((result) => {
         if (result.isConfirmed){
-            addDevice();
+            addDevice('/devices/add');
             Swal.fire({
                 title: 'Đang xử lý',
                 didOpen: () => {

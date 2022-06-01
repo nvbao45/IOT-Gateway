@@ -35,15 +35,15 @@ def configure_database(app):
 
 
 def page_not_found(e):
-    return render_template('code/page-404.html'), 404
+    return render_template('error_pages/page-404.html'), 404
 
 
 def forbidden(e):
-    return render_template('code/page-403.html'), 403
+    return render_template('error_pages/page-403.html'), 403
 
 
 def internal_server_error(e):
-    return render_template('code/page-500.html'), 500
+    return render_template('error_pages/page-500.html'), 500
 
 
 def create_app(config):

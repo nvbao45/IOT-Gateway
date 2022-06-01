@@ -47,6 +47,7 @@
                                                 <td>Số request</td>
                                                 <td>Người tạo</td>
                                                 <td>Ngày tạo</td>
+                                                <td>Enable</td>
                                                 <td>Tác vụ</td>
                                             </tr>
                                         </thead>
@@ -70,7 +71,11 @@
                                                 <td>{{ device.request_count }}</td>
                                                 <td>{{ device.device_owner }}</td>
                                                 <td>{{ device.device_created_at }}</td>
+                                                <td>{{ device.device_enable }}</td>
                                                 <td>
+                                                    <button type="button" class="btn btn-info btn-icon btn-small-icon btn-border btn-round" onclick="editDevice({{device.id}})">
+														<i class="fa fa-edit"></i>
+													</button>
                                                     <button type="button" class="btn btn-danger btn-icon btn-small-icon btn-border btn-round" onclick="deleteDevice({{device.id}})">
 														<i class="fa fa-times"></i>
 													</button>
@@ -94,15 +99,21 @@
     <swal-html>
         <form id="add-device-form">
             <div class="form-group form-inline">
-                <label for="inlineinput" class="col-md-3 col-form-label">Tên thiết bị</label>
+                <label class="col-md-3 col-form-label">Tên thiết bị</label>
                 <div class="col-md-9 p-0">
-                    <input name="name" type="text" class="form-control input-full dis" id="inlineinput" placeholder="Enter input">
+                    <input name="name" type="text" class="form-control input-full dis" id="name" placeholder="Enter input">
                 </div>
             </div>
             <div class="form-group form-inline">
-                <label for="inlineinput" class="col-md-3 col-form-label">Mô tả</label>
+                <label class="col-md-3 col-form-label">Mô tả</label>
                 <div class="col-md-9 p-0">
-                    <textarea name="description" type="text" class="form-control input-full" id="inlineinput" placeholder="Enter input"></textarea>
+                    <textarea name="description" type="text" class="form-control input-full" id="description" placeholder="Enter input"></textarea>
+                </div>
+            </div>
+            <div class="form-group form-inline hidden">
+                <label class="col-md-3 col-form-label">Token</label>
+                <div class="col-md-9 p-0">
+                    <textarea name="token" type="text" class="form-control input-full" id="token" placeholder="Enter input" maxlength="255"></textarea>
                 </div>
             </div>
         </form>
