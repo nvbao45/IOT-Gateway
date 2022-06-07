@@ -26,12 +26,9 @@ function RenderFullChart(fullchart, config){
 }
 
 (function (){
-    const fullchartconfig = [];
-    //let fullchart;
-
-
     const charts = document.getElementsByClassName('chart-data');
     Chart.defaults.color = 'white';
+
     let socket = [];
     let chart = [];
     for (let i = 0; i < charts.length; i++){
@@ -50,7 +47,6 @@ function RenderFullChart(fullchart, config){
             }
         };
         chart[chartData['id']] = new Chart(document.getElementById(`chart-${chartData['id']}`), chartConfig);
-        //fullchartconfig[chartData['id']] = chartConfig;
 
         if (location.protocol === 'http:') {
             socket[chartData.id] = new WebSocket('ws://' + location.host +
@@ -61,14 +57,9 @@ function RenderFullChart(fullchart, config){
         }
         socket[chartData.id].addEventListener('message', ev => {
             const data = JSON.parse(ev.data);
-            //fullchartconfig[chartData['id']].data.datasets[0].data = data.data;
-            //fullchartconfig[chartData['id']].data.labels = timeStampToLabels(data.timestamp);
-            //fullchart.update();
             chart[chartData['id']].data.labels = timeStampToLabels(data.timestamp);
             chart[chartData['id']].data.datasets[0].data = data.data;
             chart[chartData['id']].update();
         })
     }
-    //fullchart = RenderFullChart(document.getElementById('full-chart'), fullchartconfig);
-
 })();

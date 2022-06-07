@@ -18,6 +18,7 @@ def chart_data(ws, device_id, sensor, limit):
         timestamp = [x[1].strftime("%m/%d/%Y-%H:%M:%S") for x in _data]
         data.reverse()
         timestamp.reverse()
+
         db.session.commit()
 
         ws.send(json.dumps(dict(

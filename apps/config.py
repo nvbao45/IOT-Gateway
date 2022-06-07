@@ -1,5 +1,8 @@
 import os
+from dotenv import load_dotenv
 from decouple import config
+
+load_dotenv()
 
 
 class Config(object):
@@ -12,30 +15,13 @@ class Config(object):
     LOGS_FOLDER = config('LOGS_FOLDER', default=os.path.join(basedir, 'logs'))
 
     # Set up the App SECRET_KEY
-    SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_007')
+    SECRET_KEY = config('SECRET_KEY', default=os.getenv('SECRET_KEY'))
 
     TEMPLATES_AUTO_RELOAD = config('TEMPLATES_AUTO_RELOAD', default=True, cast=bool)
 
     # Config mysql
-    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://baonv:BaoNV040597!@192.168.31.246/UiTiOt'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://baonv:BaoNV040597!@localhost/UiTiOt'
+    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASS')}!@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-    # Config mail server
-    MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PORT = 465
-    MAIL_USE_TLS = False
-    MAIL_USE_SSL = True
-    MAIL_USERNAME = 'nvbao4566@gmail.com'
-    MAIL_PASSWORD = 'BaoNV040597!'
-    MAIL_DEFAULT_SENDER = '"UiTiOt" <noreply@gateway.com>'
-
-    # Config Flask-User
-    USER_APP_NAME = 'UiTiOt'
-    USER_ENABLE_EMAIL = True
-    USER_ENABLE_USERNAME = False
-    USER_EMAIL_SENDER_NAME = USER_APP_NAME
-    USER_EMAIL_SENDER_EMAIL = 'noreply@example.com'
 
 
 class ProductionConfig(Config):

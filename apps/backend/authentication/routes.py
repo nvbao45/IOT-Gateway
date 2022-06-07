@@ -96,19 +96,19 @@ def logout():
 # Errors
 @login_manager.unauthorized_handler
 def unauthorized_handler():
-    return render_template('code/page-403.html'), 403
+    return render_template('error_pages/page-403.html'), 403
 
 
 @blueprint.errorhandler(403)
 def access_forbidden(error):
-    return render_template('code/page-403.html'), 403
+    return render_template('error_pages/page-403.html'), 403
 
 
 @blueprint.errorhandler(404)
 def not_found_error(error):
-    return render_template('code/page-404.html'), 404
+    return render_template('error_pages/page-404.html'), 404
 
 
 @blueprint.errorhandler(500)
 def internal_error(error):
-    return render_template('code/page-500.html'), 500
+    return render_template('error_pages/page-500.html'), 500

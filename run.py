@@ -4,7 +4,7 @@ from decouple import config
 
 from apps.config import config_dict
 from apps import create_app, db
-
+from serial import Serial
 import logging
 
 

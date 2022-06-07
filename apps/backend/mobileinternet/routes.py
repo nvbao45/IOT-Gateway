@@ -48,7 +48,7 @@ def get_logs_info():
 @blueprint.route('/info')
 @login_required
 def index():
-    return render_template('mobileinternet/mb-info.html', logs=get_logs_info())
+    return render_template('mobileinternet/mb-info.html', logs=get_logs_info(), segment="mb-info")
 
 
 """
