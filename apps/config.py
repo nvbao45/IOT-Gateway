@@ -20,7 +20,8 @@ class Config(object):
     TEMPLATES_AUTO_RELOAD = config('TEMPLATES_AUTO_RELOAD', default=True, cast=bool)
 
     # Config mysql
-    SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASS')}!@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+    # SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASS')}!@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(basedir, 'app.db')}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
