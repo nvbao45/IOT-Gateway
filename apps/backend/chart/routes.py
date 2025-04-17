@@ -73,7 +73,7 @@ def config():
 def add():
     name = request.form['name']
     sensor = request.form['sensor']
-    devices = request.form.getlist('devices')
+    devices = request.form['devices']
     type = request.form['type']
     samples = request.form['samples']
     color = request.form['color']
@@ -109,7 +109,7 @@ def add():
 def edit(chart_id):
     name = request.form['name']
     sensor = request.form['sensor']
-    devices = request.form.getlist('devices')
+    devices = request.form['devices']
     type = request.form['type']
     samples = request.form['samples']
     color = request.form['color']

@@ -21,7 +21,14 @@ class Config(object):
 
     # Config mysql
     # SQLALCHEMY_DATABASE_URI = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASS')}!@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(basedir, 'app.db')}"
+    # SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(basedir, 'app.db')}"
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{username}:{password}@{host}:{port}/{database}'.format(
+        username=os.getenv('DB_USERNAME', 'default_user'),
+        password=os.getenv('DB_PASSWORD', 'default_pass'),
+        host=os.getenv('DB_HOST', 'localhost'),
+        port=os.getenv('DB_PORT', 3306),
+        database=os.getenv('DB_NAME', 'default_db')
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

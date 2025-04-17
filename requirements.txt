@@ -18,3 +18,4 @@ pyserial
 python-dotenv
 flask-sock
 Flask-BabelEx
+psycopg2-binary 

@@ -1,3 +1,19 @@
+<script src="/static/assets/js/plugin/webfont/webfont.min.js"></script>
+<script>
+    WebFont.load({
+        google: {
+            "families": ["Lato:300,400,700,900"]
+        },
+        custom: {
+            "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
+            urls: ['/static/assets/css/fonts.min.css']
+        },
+        active: function() {
+            sessionStorage.fonts = true;
+        }
+    });
+</script>
+
 <!--   Core JS Files   -->
 <script src="/static/assets/js/core/jquery.3.2.1.min.js"></script>
 <script src="/static/assets/js/core/popper.min.js"></script>
@@ -42,3 +58,4 @@
 
 <!-- Main Script-->
 <script src="/static/assets/js/baonv/main.js"></script>
+

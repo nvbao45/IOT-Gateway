@@ -1,7 +1,8 @@
 import os
+import time
 
 from werkzeug.utils import secure_filename
-from flask import current_app, jsonify
+from flask import current_app, jsonify, Response
 from apps import db
 from apps.backend.ota import blueprint
 from apps.backend.ota.models import Images
@@ -14,43 +15,57 @@ from flask_login import (
     logout_user
 )
 
-import subprocess
-import re
-
-
-def get_ip_esp8266():
-    try:
-        output = subprocess.check_output(["avahi-browse", "-ptr", "_arduino._tcp"]).decode('utf-8')
-    except:
-        return []
-
-    outputs = output.split('\n')
-    ips = re.findall(r'[0-9]+(?:\.[0-9]+){3}', output)
-    res = []
-    for o in outputs:
-        for ip in ips:
-            if ip in o:
-                _tmp = o.split(';')[-1].replace('\"', '').split(" ")
-                __tmp = []
-                for i in _tmp:
-                    __tmp.append(i.split('=')[-1])
-                res.append(o.split(';')[6:-1] + __tmp)
-
-    return res
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in {'bin'}
-
+from apps.backend.ota.func import *
 
 @blueprint.route('/')
 @login_required
 def index():
-    devices = get_ip_esp8266()
+    # devices = get_esp_devices()
+    devices = []
+    # usb_devices = get_usb_serial_info()
     _images = Images.query.all()
     return render_template('ota/ota-dashboard.html', segment='ota-main', devices=devices, images=_images)
 
+@blueprint.route('/usb-programming')
+@login_required
+def usbdevice():
+    return render_template('ota/usbdevice-dashboard.html', segment='ota-usb-programming')
+
+@blueprint.route('/usbprogramming', methods=["POST"])
+def usbprogramming():
+    if 'image' not in request.form:
+        return jsonify({'success': False, 'message': 'Image not found'}), 404
+    if 'board' not in request.form:
+        return jsonify({'success': False, 'message': 'Board not found'}), 404
+    if 'port' not in request.form:
+        return jsonify({'success': False, 'message': 'Port not found'}), 404
+    
+    image_id = request.form['image']
+    board = request.form['board'].strip()
+    port = request.form['port'].strip()
+    image = Images.query.get(image_id)
+    image_location = image.image_url
+
+    def generate():
+        cmd = [
+            "/home/baonv/bin/arduino-cli",
+            "upload",
+            "-p", port,
+            "--fqbn", board,
+            "--input-file", image_location
+        ]
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+
+        for line in process.stdout:
+            yield f"data: {line.strip()}\n\n"
+
+        process.wait()
+        if process.returncode != 0:
+            yield f"data: Upload failed with code {process.returncode}\n\n"
+        else:
+            yield f"data: Upload successful!\n\n"
+
+    return Response(generate(), mimetype='text/event-stream')
 
 @blueprint.route('/images', methods=['GET'])
 @login_required
@@ -73,15 +88,39 @@ def reconfig():
     image_location = image.image_url
     python_script = current_app.root_path + "/python_scripts/espota.py"
 
-    try:
-        reconfig_output = subprocess.check_output(
-            ["python", python_script, "-d", "-i", device_ip, "-f", image_location]).decode('utf-8')
-    except Exception as e:
-        print(str(e))
-        return jsonify({'success': False, 'message': 'Reconfig failed! See server logs for more details'}), 500
+    def generate():
+        cmd = ["python", python_script, "-d", "-i", device_ip, "-f", image_location]
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
-    return jsonify({'success': True, 'message': reconfig_output}), 200
+        for line in process.stdout:
+            yield f"data: {line.strip()}\n\n"
 
+        process.wait()
+        if process.returncode != 0:
+            yield f"data: Upload failed with code {process.returncode}\n\n"
+        else:
+            yield f"data: Upload successful!\n\n"
+
+    return Response(generate(), mimetype='text/event-stream')
+
+    # try:
+    #     reconfig_output = subprocess.check_output(
+    #         ["python", python_script, "-d", "-i", device_ip, "-f", image_location]).decode('utf-8')
+    # except Exception as e:
+    #     print(str(e))
+    #     return jsonify({'success': False, 'message': 'Reconfig failed!'}), 500
+
+    # return jsonify({'success': True, 'message': 'Reconfig successful!'}), 200
+
+@blueprint.route('/reconfig-usb', methods=["POST"])
+def reconfig_usb():
+    if 'image' not in request.form:
+        return jsonify({'success': False, 'message': 'Image not found'}), 404
+    if 'deviceID' not in request.form:
+        return jsonify({'success': False, 'message': 'Device ID not found'}), 404
+    if 'port' not in request.form:
+        return jsonify({'success': False, 'message': 'Port not found'}), 404
+    
 
 @blueprint.route('/image/delete/<int:image_id>', methods=['DELETE'])
 @login_required
@@ -129,3 +168,4 @@ def images_upload():
         db.session.add(image)
         db.session.commit()
         return jsonify({'success': True, 'message': 'File uploaded'}), 200
+ 

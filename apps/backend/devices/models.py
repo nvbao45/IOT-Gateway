@@ -21,6 +21,8 @@ class Devices(db.Model):
     request_count: int = db.Column(db.Integer, nullable=False, default=0)
     updated_at: datetime = db.Column(db.DateTime(timezone=True), onupdate=func.now())
     flag: int = db.Column(db.Integer, nullable=False, default=1)
+    # config: str = db.Column(db.String(), nullable=True, default=None)
+    # device_type: str = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):
         return '<Devices %r>' % self.id

@@ -1,44 +1,83 @@
+function updateModels() {
+    let boardType = document.getElementById("boardtype-select").value;
+    let modelSelect = document.getElementById("board-select");
+    modelSelect.innerHTML = ""; // Clear existing options
+
+    // Get models from the dataset
+    let models = JSON.parse(document.getElementById("boardsData").textContent)[boardType] || [];
+
+    // Populate models in the second dropdown
+    models.forEach(model => {
+        let option = document.createElement("option");
+        option.value = model[1];
+        option.textContent = model[0];
+        modelSelect.appendChild(option);
+    });
+}
+
+/**
+ * @deprecated This function is deprecated and may be removed in future versions.
+ * Use `reconfigUSB` instead for improved functionality and error handling.
+ */
 function reconfigAction(deviceID) {
     let image = document.getElementById('image-'+deviceID).value;
+    let board = document.getElementById('board-select').value;
+
     let formData = new FormData();
     formData.append('image', image);
-    formData.append('deviceID', deviceID);
+    formData.append('board', board);
+    formData.append('port', deviceID.replaceAll('_', '/'));
+
     const requestOptions = {
         method: 'POST',
         body: formData
     };
-    fetch('/ota/reconfig', requestOptions)
+    fetch('/ota/usbprogramming', requestOptions)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            if (data.success === true){
-                Swal.fire({
-                    title: '<strong>Thành công</strong>',
-                    text: data.message,
-                    icon: 'success',
-                    type: 'success',
-                    showCancelButton: false,
-                    focusConfirm: false,
-                    confirmButtonText: 'Ok',
-                });
-            } else {
-                Swal.fire({
-                    title: '<strong>Thất bại</strong>',
-                    text: data.message,
-                    icon: 'error',
-                    type: 'error',
-                    showCancelButton: false,
-                    focusConfirm: false,
-                    confirmButtonText: 'Ok',
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+
+            function read() {
+                reader.read().then(({ done, value }) => {
+                    if (done) {
+                        log.textContent += "\n--- Stream finished ---\n";
+                        return;
+                    }
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    // Parse each SSE line
+                    chunk.split("\n\n").forEach(event => {
+                        if (event.startsWith("data:")) {
+                            const message = event.replace("data: ", "").trim();
+                            log.textContent += message + "\n";
+                            log.scrollTop = log.scrollHeight;
+                        }
+                    });
+
+                    read();
                 });
             }
-        })
+
+            read();
+
+        }).catch(error => {
+            Swal.fire({
+                title: '<strong>Thất bại</strong>',
+                text: 'Có lỗi xảy ra trong quá trình cấu hình thiết bị',
+                icon: 'error',
+                type: 'error',
+                showCancelButton: false,
+                focusConfirm: false,
+                confirmButtonText: 'Ok',
+            });
+        });
 }
 
-function reconfig(deviceID){
+function reconfigUSB(deviceID){
     Swal.fire({
         title: '<strong>Cấu hình thiết bị</strong>',
-        template: '#ota-'+deviceID,
+        template: '#ota-usb-'+deviceID,
         showCloseButton: true,
         showCancelButton: true,
         focusConfirm: false,
@@ -47,9 +86,12 @@ function reconfig(deviceID){
     }).then((result) => {
         if (result.isConfirmed){
             let image = document.getElementById('image-'+deviceID).value;
+            let board = document.getElementById('board-select').value;
+        
             let formData = new FormData();
             formData.append('image', image);
-            formData.append('deviceID', deviceID);
+            formData.append('board', board);
+            formData.append('port', deviceID.replaceAll('_', '/'));
 
             const swalInstance = Swal.fire({
                 title: 'Uploading...',
@@ -62,7 +104,7 @@ function reconfig(deviceID){
             let hasError = false;
         
             // Start fetch request to upload
-            fetch('/ota/reconfig', {
+            fetch('/ota/usbprogramming', {
                 method: 'POST',
                 body: formData
             }).then(response => {

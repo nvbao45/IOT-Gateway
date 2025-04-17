@@ -62,7 +62,7 @@ def add():
     device = Devices(device_name=request.form['name'],
                      device_description=request.form['description'],
                      device_token=get_random_string(64),
-                     device_owner=current_user)
+                     device_owner=current_user.username)
     db.session.add(device)
     db.session.commit()
     return jsonify({"success": True, "message": "Device added successfully"})
