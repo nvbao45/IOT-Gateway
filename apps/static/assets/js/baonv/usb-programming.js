@@ -63,8 +63,8 @@ function reconfigAction(deviceID) {
 
         }).catch(error => {
             Swal.fire({
-                title: '<strong>Thất bại</strong>',
-                text: 'Có lỗi xảy ra trong quá trình cấu hình thiết bị',
+                title: '<strong>Failed</strong>',
+                text: 'There was an error during the upload process.',
                 icon: 'error',
                 type: 'error',
                 showCancelButton: false,
@@ -76,7 +76,7 @@ function reconfigAction(deviceID) {
 
 function reconfigUSB(deviceID){
     Swal.fire({
-        title: '<strong>Cấu hình thiết bị</strong>',
+        title: '<strong>Upload Firmware</strong>',
         template: '#ota-usb-'+deviceID,
         showCloseButton: true,
         showCancelButton: true,

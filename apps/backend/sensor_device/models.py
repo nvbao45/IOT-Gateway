@@ -26,4 +26,3 @@ class Devices(db.Model):
 
     def __repr__(self):
         return '<Devices %r>' % self.id
-

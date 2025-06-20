@@ -3,7 +3,7 @@ from flask import render_template, request, jsonify
 from flask_login import login_required
 from sqlalchemy import distinct, desc, or_, and_, update
 from apps import db
-from apps.backend.devices.models import Devices
+from apps.backend.sensor_device.models import Devices
 from apps.backend.ws.models import SensorParser, LastData
 
 import datetime

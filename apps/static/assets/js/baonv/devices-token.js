@@ -47,7 +47,7 @@ function editDevice(id){
                 if (result.isConfirmed){
                     addDevice(`/devices/${id}/edit`);
                     Swal.fire({
-                        title: 'Đang xử lý',
+                        title: 'Waiting',
                         didOpen: () => {
                             Swal.showLoading()
                         },
@@ -75,7 +75,7 @@ $('#btn-add-device').on('click', function(){
         if (result.isConfirmed){
             addDevice('/devices/add');
             Swal.fire({
-                title: 'Đang xử lý',
+                title: 'Waiting',
                 didOpen: () => {
                     Swal.showLoading()
                 },

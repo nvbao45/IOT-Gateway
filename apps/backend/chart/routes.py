@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 
 from apps.backend.ws.models import LastData, SensorParser
 from apps.backend.chart.models import Charts
-from apps.backend.devices.models import Devices
+from apps.backend.sensor_device.models import Devices
 
 from sqlalchemy import distinct, desc
 

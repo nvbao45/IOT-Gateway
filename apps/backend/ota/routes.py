@@ -103,14 +103,6 @@ def reconfig():
 
     return Response(generate(), mimetype='text/event-stream')
 
-    # try:
-    #     reconfig_output = subprocess.check_output(
-    #         ["python", python_script, "-d", "-i", device_ip, "-f", image_location]).decode('utf-8')
-    # except Exception as e:
-    #     print(str(e))
-    #     return jsonify({'success': False, 'message': 'Reconfig failed!'}), 500
-
-    # return jsonify({'success': True, 'message': 'Reconfig successful!'}), 200
 
 @blueprint.route('/reconfig-usb', methods=["POST"])
 def reconfig_usb():

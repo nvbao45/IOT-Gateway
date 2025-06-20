@@ -1,7 +1,7 @@
-from apps.backend.devices import blueprint
+from apps.backend.sensor_device import blueprint
 from flask import render_template, request, jsonify
 from flask_login import login_required
-from apps.backend.devices.models import Devices
+from apps.backend.sensor_device.models import Devices
 from apps.backend.ws.models import LastData
 
 from sqlalchemy import distinct, desc
@@ -18,12 +18,12 @@ def get_random_string(length):
     return result_str
 
 
-@blueprint.route('/')
+@blueprint.route('/sensor')
 @login_required
 def index():
     _devices = Devices.query.filter_by(flag=1).order_by(Devices.device_created_at.desc()).all()
     return render_template('devices/devices.html',
-                           segment='devices-token',
+                           segment='sensor-device',
                            devices=_devices)
 
 

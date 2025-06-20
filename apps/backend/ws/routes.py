@@ -2,7 +2,7 @@ from apps.backend.ws import blueprint
 from flask import render_template, request, jsonify
 from flask_login import login_required
 from apps.backend.ws.models import SensorParser, LastData
-from apps.backend.devices.models import Devices
+from apps.backend.sensor_device.models import Devices
 from sqlalchemy import distinct, desc
 from apps.backend.ws.func import *
 

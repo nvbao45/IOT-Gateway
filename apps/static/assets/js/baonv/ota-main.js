@@ -13,7 +13,7 @@ function reconfigAction(deviceID) {
             console.log(data);
             if (data.success === true){
                 Swal.fire({
-                    title: '<strong>Thành công</strong>',
+                    title: '<strong>Success</strong>',
                     text: data.message,
                     icon: 'success',
                     type: 'success',
@@ -23,7 +23,7 @@ function reconfigAction(deviceID) {
                 });
             } else {
                 Swal.fire({
-                    title: '<strong>Thất bại</strong>',
+                    title: '<strong>Failed</strong>',
                     text: data.message,
                     icon: 'error',
                     type: 'error',
@@ -37,7 +37,7 @@ function reconfigAction(deviceID) {
 
 function reconfig(deviceID){
     Swal.fire({
-        title: '<strong>Cấu hình thiết bị</strong>',
+        title: '<strong>Firmware Upload</strong>',
         template: '#ota-'+deviceID,
         showCloseButton: true,
         showCancelButton: true,

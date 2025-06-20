@@ -8,11 +8,11 @@
         <div class="page-inner py-5">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                 <div>
-                    <h2 class="text-white pb-2 fw-bold">Thiết bị</h2>
+                    <h2 class="text-white pb-2 fw-bold">Sensor Devices</h2>
                     <h5 class="text-white op-7 mb-2"></h5>
                 </div>
                 <div class="ml-md-auto py-2 py-md-0">
-                    <button id="btn-add-device" class="btn btn-secondary btn-round">Thêm thiết bị</button>
+                    <button id="btn-add-device" class="btn btn-secondary btn-round">Add Device</button>
                 </div>
             </div>
         </div>
@@ -23,16 +23,16 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-head-row card-tools-still-right">
-                            <h4 class="card-title">Thông tin các thiết bị</h4>
+                            <h4 class="card-title">Devices Info</h4>
                             <div class="card-tools">
                                 <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span></button>
                                 <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"><span class="fa fa-sync-alt"></span></button>
                                 <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-times"></span></button>
                             </div>
                         </div>
-                        <p class="card-category">
+                        {# <p class="card-category">
                             Token dùng để các node cảm biến có thể gửi dữ liệu tới gateway.
-                        </p>
+                        </p> #}
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -41,14 +41,14 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Tên thiết bị</th>
+                                                <th>Device Name</th>
                                                 <th>Token</th>
-                                                <th>Mô tả</th>
-                                                <th>Số request</th>
-                                                <th>Người tạo</th>
-                                                <th>Ngày tạo</th>
+                                                <th>Description</th>
+                                                <th>Request Count</th>
+                                                <th>Created By</th>
+                                                <th>Created At</th>
                                                 <th>Enable</th>
-                                                <th>Tác vụ</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -95,17 +95,17 @@
 </div>
 <!-- SweetAlert Template -->
 <template id="add-device-template">
-    <swal-title>Thêm thiết bị</swal-title>
+    <swal-title>Add Devices</swal-title>
     <swal-html>
         <form id="add-device-form">
             <div class="form-group form-inline">
-                <label class="col-md-3 col-form-label">Tên thiết bị</label>
+                <label class="col-md-3 col-form-label">Device Name</label>
                 <div class="col-md-9 p-0">
                     <input name="name" type="text" class="form-control input-full dis" id="name" placeholder="Enter input">
                 </div>
             </div>
             <div class="form-group form-inline">
-                <label class="col-md-3 col-form-label">Mô tả</label>
+                <label class="col-md-3 col-form-label">Description</label>
                 <div class="col-md-9 p-0">
                     <textarea name="description" type="text" class="form-control input-full" id="description" placeholder="Enter input"></textarea>
                 </div>

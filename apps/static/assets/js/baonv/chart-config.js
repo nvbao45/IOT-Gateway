@@ -44,7 +44,7 @@ function updateChart(id){
 
                     addRequest(`/chart/config/edit/${id}`, formData);
                     Swal.fire({
-                        title: 'Đang xử lý',
+                        title: 'Waiting',
                         didOpen: () => {
                             Swal.showLoading()
                         },
@@ -83,7 +83,7 @@ $('#btn-addchart').on('click', function(){
         if (result.isConfirmed){
             addChart();
             Swal.fire({
-                title: 'Đang xử lý',
+                title: 'Waiting',
                 didOpen: () => {
                     Swal.showLoading()
                 },

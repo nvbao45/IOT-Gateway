@@ -50,7 +50,7 @@ function showUSBDevices(data) {
                         </div>
                     </div>
                     <div class="col-md-12 form-group form-inline">
-                        <label class="col-md-3 col-form-label">Chọn image</label>
+                        <label class="col-md-3 col-form-label">Firmware</label>
                         <div class="col-md-9 p-0">
                             <select class="form-control input-full" id="image-${usb.device.replace(/\//g, '_')}">
                                 ${parsedData.images ? parsedData.images.map(image => `
@@ -98,7 +98,7 @@ function showWifiDevices(data) {
                 <swal-html>
                     <ul class="list-group mt-3">
                         <li class="list-group-item list-group-item-light">Host Name: ${network.hostname}</li>
-                        <li class="list-group-item list-group-item-light">Địa chỉ IP: ${network.ip}</li>
+                        <li class="list-group-item list-group-item-light">IP Address: ${network.ip}</li>
                         <li class="list-group-item list-group-item-light">Port: ${network.port}</li>
                         <li class="list-group-item list-group-item-light">TCP Check: ${network.tcp_check}</li>
                         <li class="list-group-item list-group-item-light">SSH Upload: ${network.ssh_upload}</li>
@@ -106,7 +106,7 @@ function showWifiDevices(data) {
                         <li class="list-group-item list-group-item-light">Auth Upload: ${network.auth_upload}</li>
                     </ul>
                     <div class="mt-3">
-                        <b>Chọn image mới</b>
+                        <b>New Firmware</b>
                         <div class="form-group">
                             <select class="form-control" id="image-${network.ip.replace(/\./g, '-')}">
                                 ${parsedData.images ? parsedData.images.map(image => `

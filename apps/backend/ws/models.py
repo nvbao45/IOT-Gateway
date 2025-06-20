@@ -1,7 +1,7 @@
 from sqlalchemy import UniqueConstraint, Constraint
 from apps import db
 from dataclasses import dataclass
-from apps.backend.devices.models import Devices
+from apps.backend.sensor_device.models import Devices
 import uuid
 import re
 

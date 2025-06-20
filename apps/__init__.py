@@ -3,17 +3,20 @@ import os
 from flask import Flask, render_template
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from importlib import import_module
 from flask_sock import Sock
 
 
 db = SQLAlchemy()
+migrage = Migrate()
 login_manager = LoginManager()
 sock = Sock()
 
 
 def register_extensions(app):
     db.init_app(app)
+    migrage.init_app(app, db)
     login_manager.init_app(app)
 
 

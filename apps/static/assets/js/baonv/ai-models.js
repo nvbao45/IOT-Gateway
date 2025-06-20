@@ -1,5 +1,5 @@
 function deleteImage(image) {
-    deleteRequest('/ota/image/delete/', image, 'image');
+    deleteRequest('/ai/model/delete/', image, 'image');
 }
 
 function upload(){
@@ -11,7 +11,7 @@ function upload(){
     queryString.forEach(function(item) {
         formData.append(item.name, item.value);
     });
-    addRequest('/ota/image/upload', formData);
+    addRequest('/ai/model/upload', formData);
 }
 
 $('#btn-upload').on('click', function(){

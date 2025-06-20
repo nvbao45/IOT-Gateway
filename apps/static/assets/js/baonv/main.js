@@ -6,6 +6,7 @@ function deleteRequest(endpoint, id, removeId) {
     Swal.fire({
         title: "Bạn có chắc chắn muốn xóa?",
         showDenyButton: true,
+        icon: 'warning',
         confirmButtonText: 'Xóa',
         denyButtonText: 'Hủy',
     }).then((result) => {
@@ -69,7 +70,7 @@ function addRequest(endpoint, formData) {
             Swal.hideLoading()
             Swal.close()
             Swal.fire({
-                title: 'Thất bại',
+                title: 'Failed',
                 text: error,
                 icon: 'error',
                 showConfirmButton: false,

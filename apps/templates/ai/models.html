@@ -8,11 +8,11 @@
         <div class="page-inner py-5">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                 <div>
-                    <h2 class="text-white pb-2 fw-bold">OTA</h2>
+                    <h2 class="text-white pb-2 fw-bold">AI Models</h2>
                     <h5 class="text-white op-7 mb-2"></h5>
                 </div>
                 <div class="ml-md-auto py-2 py-md-0">
-                    <button id="btn-upload" class="btn btn-secondary btn-round">Add Firmware</button>
+                    <button id="btn-upload" class="btn btn-secondary btn-round">Add Models</button>
                 </div>
             </div>
         </div>
@@ -30,9 +30,6 @@
                                 <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-times"></span></button>
                             </div>
                         </div>
-                        {# <p class="card-category">
-                            Thông tin các images đã được tạo
-                        </p> #}
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -44,7 +41,6 @@
                                                 <th>Name</th>
                                                 <th>File name</th>
                                                 <th>Version</th>
-                                                <th>Size</th>
                                                 <th>Description</th>
                                                 <th>Uploaded at</th>
                                                 <th>Uploaded by</th>
@@ -54,13 +50,12 @@
                                         <tbody>
                                             {% for image in images %}
                                             <tr id="image-{{ image.id }}">
-                                                <td>{{ image.image_name }}</td>
-                                                <td>{{ image.image_file }}</td>
-                                                <td>{{ image.image_version }}</td>
-                                                <td>{{ image.image_size }} bytes</td>
-                                                <td>{{ image.image_description }}</td>
-                                                <td>{{ image.image_created_at }}</td>
-                                                <td>{{ image.image_owner }}</td>
+                                                <td>{{ image.name }}</td>
+                                                <td>{{ image.file }}</td>
+                                                <td>{{ image.version }}</td>
+                                                <td>{{ image.description }}</td>
+                                                <td>{{ image.created_at }}</td>
+                                                <td>{{ image.owner }}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-danger btn-icon btn-small-icon btn-border btn-round" onclick="deleteImage({{image.id}})">
 														<i class="fa fa-times"></i>
@@ -81,11 +76,11 @@
 </div>
 <!-- SweetAlert Template -->
 <template id="image-upload">
-    <swal-title>Thêm image</swal-title>
+    <swal-title>Add Model</swal-title>
     <swal-html>
         <form id="image-upload-form">
             <div class="form-group form-inline">
-                <label for="inlineinput" class="col-md-3 col-form-label">Tên</label>
+                <label for="inlineinput" class="col-md-3 col-form-label">Name</label>
                 <div class="col-md-9 p-0">
                     <input name="name" type="text" class="form-control input-full" id="inlineinput" placeholder="Enter input">
                 </div>
@@ -97,15 +92,15 @@
                 </div>
             </div>
             <div class="form-group form-inline">
-                <label for="inlineinput" class="col-md-3 col-form-label">Ghi chú</label>
+                <label for="inlineinput" class="col-md-3 col-form-label">Description</label>
                 <div class="col-md-9 p-0">
                     <textarea name="description" type="text" class="form-control input-full" id="inlineinput" placeholder="Enter input"></textarea>
                 </div>
             </div>
             <div class="form-group form-inline">
-                <label for="inlineinput" class="col-md-3 col-form-label">Chọn file</label>
+                <label for="inlineinput" class="col-md-3 col-form-label">Select File</label>
                 <div class="col-md-9 p-0">
-                     <input type="file" id="file" name="file-input" class="form-control input-full" accept=".bin,.hex" />
+                     <input type="file" id="file" name="file-input" class="form-control input-full" />
                 </div>
             </div>
         </form>
@@ -115,5 +110,5 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-<script src="/static/assets/js/baonv/ota-image.js"></script>
+<script src="/static/assets/js/baonv/ai-models.js"></script>
 {% endblock javascripts %}

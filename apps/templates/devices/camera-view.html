@@ -1,0 +1,50 @@
+{% extends "layouts/base.html" %} {% block title %} Camera Viewer {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+    <div class="panel-header bg-primary-gradient">
+        <div class="page-inner py-5">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                <div>
+                    <h2 class="text-white pb-2 fw-bold">Camera Viewer</h2>
+                    <h5 class="text-white op-7 mb-2"></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-inner mt--5">
+        <div class="row row-card-no-pd">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <h4 class="card-title">{{camera.name}}</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="camera-services">
+                            <p>Camera Services</p>
+                            <button class="btn btn-primary" id="start_stream">YOLO</button>
+                        </div>
+                        <div class="text-center mt-5" id="video-container">
+                            <img id="camera_view" alt="Camera View" src="/devices/camera/{{camera.id}}/video_feed"
+                                style="max-width: 100%; max-height: 100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="/static/assets/js/baonv/camera-viewer.js"></script>
+{% endblock javascripts %}

@@ -1,0 +1,154 @@
+{% extends "layouts/base.html" %} {% block title %} Camera {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="content">
+    <div class="panel-header bg-primary-gradient">
+        <div class="page-inner py-5">
+            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+                <div>
+                    <h2 class="text-white pb-2 fw-bold">Camera</h2>
+                    <h5 class="text-white op-7 mb-2"></h5>
+                </div>
+                <div class="ml-md-auto py-2 py-md-0">
+                    <button id="btn-add-camera" class="btn btn-secondary btn-round">Add Camera</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-inner mt--5">
+        <div class="row row-card-no-pd">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-head-row card-tools-still-right">
+                            <h4 class="card-title">Cameras Info</h4>
+                            <div class="card-tools">
+                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-angle-down"></span></button>
+                                <button class="btn btn-icon btn-link btn-primary btn-xs btn-refresh-card"><span class="fa fa-sync-alt"></span></button>
+                                <button class="btn btn-icon btn-link btn-primary btn-xs"><span class="fa fa-times"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive table-hover table-sales">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Protocol</th>
+                                                <th>IP Address</th>
+                                                <th>Port</th>
+                                                <th>Stream Path</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for camera in cameras %}
+                                            <tr id="camera-{{ camera.id }}">
+                                                <td><a href="/devices/camera/view/{{camera.id}}">{{ camera.name }}</a></td>
+                                                <td>{{ camera.description }}</td>
+                                                <td>{{ camera.protocol }}</td>
+                                                <td>{{ camera.ip_address }}</td>
+                                                <td>{{ camera.port }}</td>
+                                                <td>{{ camera.stream_path }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info btn-icon btn-small-icon btn-border btn-round" onclick="editCamera({{camera.id}})">
+														<i class="fa fa-edit"></i>
+													</button>
+                                                    <button type="button" class="btn btn-danger btn-icon btn-small-icon btn-border btn-round" onclick="deleteCamera({{camera.id}})">
+														<i class="fa fa-times"></i>
+													</button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- SweetAlert Template -->
+<template id="add-camera-template">
+    <swal-title>Add Camera</swal-title>
+    <swal-html>
+        <div class="alert alert-info hidden" id="stream_uri_alert">
+            <strong>Stream URI: </strong><span id="stream_uri"></span>
+        </div>
+        <form id="add-camera-form">
+            <input type="hidden" id="uri" name="uri" value="">
+            <div class="form-group form-inline">
+                <label class="col-md-3 col-form-label">Name</label>
+                <div class="col-md-9 p-0">
+                    <input name="name" type="text" class="form-control input-full dis" id="name" placeholder="Camera name">
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-3 col-form-label">Description</label>
+                <div class="col-md-9 p-0">
+                    <textarea name="description" type="text" class="form-control input-full" id="description" placeholder="Description"></textarea>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-3 col-form-label">Protocol</label>
+                <div class="col-md-9 p-0">
+                    <select name="protocol" class="form-control input-full" id="protocol">
+                        <option value="rtsp">RTSP</option>
+                        <option value="http">HTTP</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-3 col-form-label">IP Address</label>
+                <div class="col-md-9 p-0">
+                    <input name="ip_address" type="text" class="form-control input-full dis" id="ip_address" placeholder="192.168.1.10">
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-3 col-form-label">Port</label>
+                <div class="col-md-9 p-0">
+                    <input name="port" type="number" class="form-control input-full dis" id="port" placeholder="554">
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-3 col-form-label">Stream Path</label>
+                <div class="col-md-9 p-0">
+                    <input name="stream_path" type="text" class="form-control input-full dis" id="stream_path" placeholder="/">
+                </div>
+            </div>
+            <div class="form-group form-inline">
+                <label class="col-md-3 col-form-label">Authentication</label>
+                <div class="col-md-9 p-0 left">
+                    <input name="auth" type="checkbox" class="form-control input-full dis" onchange="showAuthForm(this)">
+                </div>
+            </div>
+            <div class="form-group form-inline hidden auth-form">
+                <label class="col-md-3 col-form-label">Username</label>
+                <div class="col-md-9 p-0">
+                    <input name="username" type="text" class="form-control input-full dis" id="username" placeholder="Username">
+                </div>
+            </div>
+            <div class="form-group form-inline hidden auth-form">
+                <label class="col-md-3 col-form-label">Password</label>
+                <div class="col-md-9 p-0">
+                    <input name="password" type="text" class="form-control input-full dis" id="password" placeholder="Password">
+                </div>
+            </div>
+        </form>
+    </swal-html>
+</template>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="/static/assets/js/baonv/camera-device.js"></script>
+{% endblock javascripts %}
